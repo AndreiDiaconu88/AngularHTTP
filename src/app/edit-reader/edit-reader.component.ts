@@ -3,13 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Reader } from "app/models/reader";
 import { DataService } from 'app/core/data.service';
-import { BadgeService } from 'app/services/badge.service';
+import {BadgeService} from '../services/badge.service';
 
 @Component({
   selector: 'app-edit-reader',
   templateUrl: './edit-reader.component.html',
   styles: [],
-  providers: [BadgeService]
 })
 export class EditReaderComponent implements OnInit {
 
