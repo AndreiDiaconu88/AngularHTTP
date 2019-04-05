@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently --kill-others \"ng build --watch --no-delete-output-path\" \"node server.js\"",
+    "start": "concurrently --kill-others \"ng build --watch --no-delete-output-path\" \"node server.js -o\"",
     "build": "ng build && node server.js",
     "test": "ng test",
     "lint": "ng lint",

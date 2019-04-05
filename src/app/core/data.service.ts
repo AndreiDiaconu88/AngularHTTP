@@ -3,10 +3,11 @@ import {Injectable} from '@angular/core';
 import {allBooks, allReaders} from 'app/data';
 import {Reader} from 'app/models/reader';
 import {Book} from 'app/models/book';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {OldBook} from '../models/old-book';
-import {map, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
+import {BookTrackerError} from '../models/bookTrackerError';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,20 @@ export class DataService {
     return allReaders.find(reader => reader.readerID === id);
   }
 
-  getAllBooks(): Observable<Book[]> {
-    console.log("Starting logging the books")
-    return this.http.get<Book[]>(this.booksUrl);
+  getAllBooks(): Observable<Book[] | BookTrackerError> {
+    return this.http.get<Book[]>(this.booksUrl).pipe(
+      catchError(httpError => this.handleHttpError(httpError))
+    );
+  }
+
+  private handleHttpError(error: HttpErrorResponse): Observable<BookTrackerError> {
+    let bookError = new BookTrackerError();
+
+    bookError.errorNumber = 100;
+    bookError.message = error.statusText;
+    bookError.friendlyMessage = "An error occured when retrieving the information";
+
+    return throwError(bookError);
   }
 
   getBookById(id: number): Observable<Book> {

@@ -108,7 +108,6 @@ function getNextAvailableID(allBooks) {
     return ++maxID;
 
 }
-
 function getBookData() {
     var data = fs.readFileSync(datafile, 'utf8');
     return JSON.parse(data);
