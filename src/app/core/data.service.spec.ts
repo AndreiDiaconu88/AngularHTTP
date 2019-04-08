@@ -56,4 +56,20 @@ describe('Data service tests', () => {
     })
   })
 
+  it("Should get book by id", () => {
+    dataService.getBookById(booksArray[0].bookID).subscribe(
+      (data: Book) => {
+        expect(data.bookID).toEqual(2);
+        expect(data.title).toEqual(booksArray[0].title);
+        expect(data.author).toEqual(booksArray[0].author);
+        expect(data.publicationYear).toEqual(booksArray[0].publicationYear);
+      }
+    )
+
+    let bookRequest: TestRequest = httpTestingController.expectOne(`/api/books/${booksArray[0].bookID}`);
+    expect(bookRequest.request.method).toEqual('GET');
+
+    bookRequest.flush(booksArray[0]);
+  })
+
 })
